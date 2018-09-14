@@ -1,21 +1,35 @@
 import React, { Component } from 'react';
 import List from './List';
+import Todo from './Todo';
+
 
 class App extends Component {
   state = {
-    todos: [
-      { id: 1, name: 'Learn Rails', complete: true },
-      { id: 2, name: 'Learn React', complete: false },
-      { id: 3, name: 'Learn Redux', complete: false },
-      { id: 4, name: 'Learn Profit', complete: false }
-    ]
+    todos: []
   }
+
+  getUniqId = () => {
+    //NOTE We are just using this as a helper function for id's since we aren't using a db yet
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+   }
+ 
+   addItem = (name) => {
+     const { todos } = this.state;
+     const todo = { name, id: this.getUniqId() , complete: false }
+     this.setState({ todos: [todo, ...todos] }); 
+   }
+ 
   
   render() {
     const { todos } = this.state;
  
     return (
-      <List name="Todo List" items={todos} />
+      <div>
+        <Todo addItem={this.addItem} />
+        <List name="Todo List" items={todos} />
+      </div>
     );
   }
 }
